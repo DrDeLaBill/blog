@@ -2,12 +2,14 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\ImageUpload;
 use Yii;
 use app\models\Article;
 use app\models\ArticleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -65,13 +67,18 @@ class ArticleController extends Controller
     public function actionCreate()
     {
         $model = new Article();
+        $image = new ImageUpload();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->saveImage($model, $image);
+            //$model->user = Yii::$app->request->getAuthUser();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'image' => $image,
         ]);
     }
 
@@ -85,13 +92,16 @@ class ArticleController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $image = new ImageUpload();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->saveImage($model, $image);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'image' => $image,
         ]);
     }
 
@@ -124,4 +134,11 @@ class ArticleController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    private function saveImage(Article $model, ImageUpload $image)
+    {
+        $imageFile = UploadedFile::getInstance($image, 'image');
+        $model->saveImage($image->uploadImage($imageFile, $model->image));
+    }
+
 }

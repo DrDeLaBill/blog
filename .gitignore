@@ -224,3 +224,5 @@ phpunit.phar
 /backend/web/robots.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/yii,yii2,phpstorm+all,phpstorm
+
+web/uploads/*

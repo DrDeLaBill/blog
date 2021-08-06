@@ -40,11 +40,11 @@ class Article extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['content'], 'string'],
-            [['date'], 'safe'],
-            [['viewed', 'user_id', 'status', 'category_id'], 'integer'],
+            [['date'], 'date', 'format' => 'php:Y-m-d'],
+            [['date'], 'default', 'value' => date('Y-m-d')],
+            [['status'], 'default', 'value' => 0],
+            [['viewed'], 'default', 'value' => 0],
             [['title', 'description', 'image'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -95,5 +95,28 @@ class Article extends \yii\db\ActiveRecord
     public function getArticleTags()
     {
         return $this->hasMany(ArticleTag::className(), ['article_id' => 'id']);
+    }
+
+    public function saveImage($image)
+    {
+        $this->image = $image;
+        return $this->save(false);
+    }
+
+    private function deleteImage()
+    {
+        $imageModel = new ImageUpload();
+        $imageModel->deleteFile($this->image);
+    }
+
+    public function beforeDelete()
+    {
+        $this->deleteImage();
+        return parent::beforeDelete();
+    }
+
+    public function getImage()
+    {
+        return ($this->image) ? '/uploads/' . $this->image : '/default.jpg';
     }
 }
