@@ -38,13 +38,14 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title', 'category_id'], 'required'],
             [['content'], 'string'],
             [['date'], 'date', 'format' => 'php:Y-m-d'],
             [['date'], 'default', 'value' => date('Y-m-d')],
             [['status'], 'default', 'value' => 0],
             [['viewed'], 'default', 'value' => 0],
             [['title', 'description', 'image'], 'string', 'max' => 255],
+            [['category_id'], 'integer'],
         ];
     }
 
@@ -95,6 +96,14 @@ class Article extends \yii\db\ActiveRecord
     public function getArticleTags()
     {
         return $this->hasMany(ArticleTag::className(), ['article_id' => 'id']);
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(ArticleTag::className(), ['id' => 'tag_id'])->viaTable(
+            'article_tag',
+            ['article_id' => 'id']
+        );
     }
 
     public function saveImage($image)

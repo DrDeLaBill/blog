@@ -67,4 +67,19 @@ class ArticleTag extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
     }
+
+    public static function saveArticleTags($article, $tagIds)
+    {
+        foreach ($tagIds as $tagId) {
+            $articleTag = new ArticleTag();
+            $articleTag->article_id = $article->id;
+            $articleTag->tag_id = $tagId;
+            $articleTag->save();
+        }
+    }
+
+    public static function clearArticleTags($article)
+    {
+        ArticleTag::deleteAll(['article_id' => $article->id]);
+    }
 }

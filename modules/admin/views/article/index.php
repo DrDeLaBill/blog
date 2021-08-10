@@ -38,6 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img($data->getImage(), ['width' => 50]);
                 },
             ],
+            [
+                'format' => 'html',
+                'label' => 'Category',
+                'value' => function ($data) {
+                    return $data->category->title;
+                },
+            ],
             //'image',
             //'viewed',
             //'user_id',

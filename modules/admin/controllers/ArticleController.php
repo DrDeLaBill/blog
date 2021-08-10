@@ -2,10 +2,14 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\ArticleTag;
+use app\models\Category;
 use app\models\ImageUpload;
+use app\models\Tag;
 use Yii;
 use app\models\Article;
 use app\models\ArticleSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,9 +72,11 @@ class ArticleController extends Controller
     {
         $model = new Article();
         $image = new ImageUpload();
+        $tags = Tag::getAllTags();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->saveImage($model, $image);
+            $this->saveTags($model);
             //$model->user = Yii::$app->request->getAuthUser();
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -79,6 +85,8 @@ class ArticleController extends Controller
         return $this->render('create', [
             'model' => $model,
             'image' => $image,
+            'selectedTags' => [],
+            'tags' => $tags,
         ]);
     }
 
@@ -93,15 +101,20 @@ class ArticleController extends Controller
     {
         $model = $this->findModel($id);
         $image = new ImageUpload();
+        $selectedTags = ArrayHelper::getColumn(ArticleTag::find()->where(['article_id' => $id])->all(), 'tag_id');
+        $tags = Tag::getAllTags();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->saveImage($model, $image);
+            $this->saveTags($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
             'image' => $image,
+            'selectedTags' => $selectedTags,
+            'tags' => $tags,
         ]);
     }
 
@@ -138,7 +151,16 @@ class ArticleController extends Controller
     private function saveImage(Article $model, ImageUpload $image)
     {
         $imageFile = UploadedFile::getInstance($image, 'image');
-        $model->saveImage($image->uploadImage($imageFile, $model->image));
+        if ($imageFile) {
+            $model->saveImage($image->uploadImage($imageFile, $model->image));
+        }
+    }
+
+    public function saveTags($article)
+    {
+        $tagIds = Yii::$app->request->post('tags');
+        ArticleTag::clearArticleTags($article);
+        ArticleTag::saveArticleTags($article, $tagIds);
     }
 
 }
