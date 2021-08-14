@@ -128,4 +128,9 @@ class Article extends \yii\db\ActiveRecord
     {
         return ($this->image) ? '/uploads/' . $this->image : '/default.jpg';
     }
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->date);
+    }
 }

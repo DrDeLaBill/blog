@@ -1,53 +1,84 @@
 <?php
 
-/* @var $this yii\web\View */
+use yii\helpers\Html;
+use yii\widgets\LinkPager;
 
-$this->title = 'My Yii Application';
+$this->title = 'Blog';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+<div class="row mb-4">
+    <h2 class="col-6 tm-text-primary">
+        Latest Articles
+    </h2>
+</div>
+<div class="row tm-mb-90 tm-gallery">
+    <?php
+    foreach ($articles as $article): ?>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+            <figure class="effect-ming tm-video-item" style="height: 150px;">
+                <?= Html::img(
+                    ($article->image) ? ('/uploads/' . $article->image) : '/default.jpg',
+                    [
+                        'class' => 'img-fluid',
+                        'style' => 'background-repeat: no-repeat; background-position: -40px 0px; background-size: cover;'
+                    ]
+                ) ?>
+                <figcaption class="d-flex align-items-center justify-content-center">
+                    <h2><?= $article->title ?></h2>
+                    <a href="#">View more</a>
+                </figcaption>
+            </figure>
+            <h2><?= $article->title ?></h2>
+            <div class="d-flex justify-content-between tm-text-gray">
+                <span class="tm-text-gray-light"><?= $article->getDate() ?></span>
+                <span><?= $article->viewed ?> views</span>
             </div>
         </div>
+    <?php
+    endforeach; ?>
+</div>
+<div class="row tm-mb-90">
+    <div class="col-12 justify-content-between align-items-center tm-paging-col">
+        <?php
+        echo LinkPager::widget(
+            [
+                'pagination' => $pages,
+                'hideOnSinglePage' => true,
+                'prevPageLabel' => 'назад',
+                'nextPageLabel' => 'далее',
 
+                // Настройки контейнера пагинации
+                'options' => [
+                    'tag' => 'div',
+                    'class' => 'tm-paging d-flex justify-content-center',
+                    'id' => 'pager-container',
+                ],
+
+                // Настройки классов css для ссылок
+                'linkOptions' => ['class' => 'tm-paging-link'],
+                'activePageCssClass' => 'active',
+                'disabledPageCssClass' => 'tm-paging-link',
+                'disableCurrentPageButton' => true,
+
+
+//                // Настройки для навигационных ссылок
+                'prevPageCssClass' => '',
+                'nextPageCssClass' => '',
+            ]
+        );
+        ?>
     </div>
 </div>
+<!---->
+<!--<div class="row tm-mb-90">-->
+<!--    <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">-->
+<!--        <a href="javascript:void(0);" class="btn btn-primary tm-btn-prev mb-2 disabled">Previous</a>-->
+<!--        <div class="tm-paging d-flex">-->
+<!--            <a href="javascript:void(0);" class="active tm-paging-link">1</a>-->
+<!--            <a href="javascript:void(0);" class="tm-paging-link">2</a>-->
+<!--            <a href="javascript:void(0);" class="tm-paging-link">3</a>-->
+<!--            <a href="javascript:void(0);" class="tm-paging-link">4</a>-->
+<!--        </div>-->
+<!--        <a href="javascript:void(0);" class="btn btn-primary tm-btn-next">Next Page</a>-->
+<!--    </div>-->
+<!--</div>-->
