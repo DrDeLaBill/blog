@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Article;
+use app\models\SignupForm;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -33,9 +34,6 @@ class SiteController extends Controller
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
             ],
         ];
     }
@@ -80,43 +78,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render(
-            'login',
-            [
-                'model' => $model,
-            ]
-        );
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
      * Displays contact page.
      *
      * @return Response|string
@@ -150,16 +111,16 @@ class SiteController extends Controller
     public function actionArticle($id)
     {
         $article = Article::findOne($id);
-        return $this->render(
-            'article',
-            [
-                'article' => $article,
-            ]
-        );
-    }
-
-    public function actionRegister()
-    {
-        return $this->render('register');
+        if ($article) {
+            $article->addView();
+            return $this->render(
+                'article',
+                [
+                    'article' => $article,
+                ]
+            );
+        } else {
+            return $this->goHome();
+        }
     }
 }

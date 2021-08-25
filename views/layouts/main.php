@@ -4,6 +4,7 @@
 
 /* @var $content string */
 
+use app\models\User;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
@@ -51,19 +52,19 @@ $this->beginPage() ?>
                     </li>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <li class="nav-item">
-                            <?= Html::a('Login', ['/site/login'], ['class' => "nav-link nav-link-3"]) ?>
+                            <?= Html::a('Login', ['/auth/login'], ['class' => "nav-link nav-link-3"]) ?>
                         </li>
                         <li class="nav-item">
-                            <?= Html::a('Register', ['/site/register'], ['class' => "nav-link nav-link-4"]) ?>
+                            <?= Html::a('Signup', ['/auth/signup'], ['class' => "nav-link nav-link-4"]) ?>
                         </li>
                     <?php else: ?>
-                        <?php if (Yii::$app->user->is_admin): ?>
+                        <?php if (User::findOne(Yii::$app->user->id)->is_admin): ?>
                             <li class="nav-item">
                                 <?= Html::a('Admin', ['/admin/default/index'], ['class' => "nav-link nav-link-4"]) ?>
                             </li>
                         <?php endif; ?>
                         <li class="nav-item">
-                            <?= Html::a('Logout', ['/site/logout'], ['class' => "nav-link nav-link-2"]) ?>
+                            <?= Html::a('Logout', ['/auth/logout'], ['class' => "nav-link nav-link-2"]) ?>
                         </li>
                     <?php endif; ?>
                 </ul>

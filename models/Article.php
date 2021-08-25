@@ -133,4 +133,10 @@ class Article extends \yii\db\ActiveRecord
     {
         return Yii::$app->formatter->asDate($this->date);
     }
+
+    public function addView()
+    {
+        $this->viewed++;
+        $this->save(false);
+    }
 }

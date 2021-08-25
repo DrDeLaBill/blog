@@ -25,7 +25,7 @@ class AppAsset extends AssetBundle
         'css/templatemo-style.css',
     ];
     public $js = [
-        'js/plugins.js',
+        //'js/plugins.js',
     ];
     public $depends = [
     ];
