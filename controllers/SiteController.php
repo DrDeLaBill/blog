@@ -65,15 +65,18 @@ class SiteController extends Controller
     {
         $query = Article::find();
         $countArticles = $query->count();
-        $pages = new Pagination(['totalCount' => $countArticles, 'pageSize' => 3]);
+        $pages = new Pagination(['totalCount' => $countArticles, 'pageSize' => 16]);
         $articles = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
-        return $this->render('index', [
-            'articles' => $articles,
-            'pages' => $pages,
-        ]);
+        return $this->render(
+            'index',
+            [
+                'articles' => $articles,
+                'pages' => $pages,
+            ]
+        );
     }
 
     /**
@@ -93,9 +96,12 @@ class SiteController extends Controller
         }
 
         $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render(
+            'login',
+            [
+                'model' => $model,
+            ]
+        );
     }
 
     /**
@@ -123,9 +129,12 @@ class SiteController extends Controller
 
             return $this->refresh();
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        return $this->render(
+            'contact',
+            [
+                'model' => $model,
+            ]
+        );
     }
 
     /**
@@ -138,9 +147,15 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    public function actionArticle()
+    public function actionArticle($id)
     {
-        return $this->render('article');
+        $article = Article::findOne($id);
+        return $this->render(
+            'article',
+            [
+                'article' => $article,
+            ]
+        );
     }
 
     public function actionRegister()

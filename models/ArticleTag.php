@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use phpDocumentor\Reflection\Types\This;
 use Yii;
 
 /**
@@ -31,8 +32,20 @@ class ArticleTag extends \yii\db\ActiveRecord
     {
         return [
             [['article_id', 'tag_id'], 'integer'],
-            [['article_id'], 'exist', 'skipOnError' => true, 'targetClass' => Article::className(), 'targetAttribute' => ['article_id' => 'id']],
-            [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tag::className(), 'targetAttribute' => ['tag_id' => 'id']],
+            [
+                ['article_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Article::className(),
+                'targetAttribute' => ['article_id' => 'id']
+            ],
+            [
+                ['tag_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Tag::className(),
+                'targetAttribute' => ['tag_id' => 'id']
+            ],
         ];
     }
 
@@ -70,11 +83,13 @@ class ArticleTag extends \yii\db\ActiveRecord
 
     public static function saveArticleTags($article, $tagIds)
     {
-        foreach ($tagIds as $tagId) {
-            $articleTag = new ArticleTag();
-            $articleTag->article_id = $article->id;
-            $articleTag->tag_id = $tagId;
-            $articleTag->save();
+        if (is_array($tagIds)) {
+            foreach ($tagIds as $tagId) {
+                $articleTag = new ArticleTag();
+                $articleTag->article_id = $article->id;
+                $articleTag->tag_id = $tagId;
+                $articleTag->save();
+            }
         }
     }
 

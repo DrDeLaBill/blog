@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 $this->title = 'Blog';
@@ -25,7 +26,7 @@ $this->title = 'Blog';
                 ) ?>
                 <figcaption class="d-flex align-items-center justify-content-center">
                     <h2><?= $article->title ?></h2>
-                    <a href="#">View more</a>
+                    <a href="<?= Url::toRoute(['/site/article', 'id' => $article->id]) ?>">View more</a>
                 </figcaption>
             </figure>
             <h2><?= $article->title ?></h2>
