@@ -1,12 +1,19 @@
+<?php
+
+use yii\bootstrap\Html;
+
+?>
+
 <div class="admin-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+    <h1>Admin panel</h1>
+
+    <div class="row">
+        <div class="col">
+            <?= Html::a('Article settings', ['article/index'], ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+            <?= Html::a('Comment settings', ['comment/index'], ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+            <?= Html::a('Category settings', ['category/index'], ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+            <?= Html::a('Tag settings', ['tag/index'], ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+        </div>
+    </div>
+
 </div>

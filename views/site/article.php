@@ -6,7 +6,16 @@ use yii\bootstrap\ActiveForm;
 ?>
 <div class="container-fluid tm-mt-60">
     <div class="row mb-4">
+
         <h2 class="col-12 tm-text-primary">
+            <?= Html::img(
+                ($article->user->image) ? ('/uploads/' . $article->user->image) : '/default.jpg',
+                [
+                    'class' => 'comment-photo-img',
+                    'style' => 'background-repeat: no-repeat; background-position: -40px 0px; background-size: cover;'
+                ]
+            ) ?>
+            <?= Yii::$app->user->identity->username . ": " ?>
             <?= $article->title ?>
         </h2>
     </div>
@@ -55,34 +64,34 @@ use yii\bootstrap\ActiveForm;
     <?php
     endforeach; ?>
 
-    <div class="col-mx-6 my-4">
-        <h2>Leave a comment</h2>
-    </div>
-
-    <?php
-    $form = ActiveForm::begin(
-        [
-            'id' => 'comment-form',
-            'layout' => 'horizontal',
-            'action' => ['site/comment', 'article_id' => $article->id],
-            'fieldConfig' => [
-                'template' => "{label}\n<div class=\"col-lg-6\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-                'labelOptions' => ['class' => 'col-lg-1 control-label'],
-            ],
-        ]
-    ); ?>
-
-    <?= $form->field($commentForm, 'text')->textarea()->label(false) ?>
-
-    <div class="form-group">
-        <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-            <?= Html::a('Change avatar', ['site/user-image'], ['class' => 'btn btn-primary mx-2']) ?>
+    <?php if (!Yii::$app->user->isGuest): ?>
+        <div class="col-mx-6 my-4">
+            <h2>Leave a comment</h2>
         </div>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+        <?php
+        $form = ActiveForm::begin(
+            [
+                'id' => 'comment-form',
+                'layout' => 'horizontal',
+                'action' => ['site/comment', 'article_id' => $article->id],
+                'fieldConfig' => [
+                    'template' => "{label}\n<div class=\"col-lg-6\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+                    'labelOptions' => ['class' => 'col-lg-1 control-label'],
+                ],
+            ]
+        ); ?>
 
+        <?= $form->field($commentForm, 'text')->textarea()->label(false) ?>
 
+        <div class="form-group">
+            <div class="col-lg-offset-1 col-lg-11">
+                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::a('Change avatar', ['site/user-image'], ['class' => 'btn btn-primary mx-2']) ?>
+            </div>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+    <?php endif; ?>
 
 </div>

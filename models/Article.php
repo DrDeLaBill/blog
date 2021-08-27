@@ -142,6 +142,9 @@ class Article extends \yii\db\ActiveRecord
 
     public function addView()
     {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
         $this->viewed++;
         $this->save(false);
     }

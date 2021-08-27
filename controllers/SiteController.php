@@ -90,6 +90,7 @@ class SiteController extends Controller
 
         if ($article) {
             $article->addView();
+
             return $this->render(
                 'article',
                 [

@@ -5,12 +5,22 @@ use yii\bootstrap\Html;
 
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<div class="container-fluid tm-mt-60">
 
-<?= $form->field($image, 'image')->fileInput(['class' => 'form-control']) ?>
+    <div class="row col-md-6">
+        <h2 class="col-12 tm-text-primary form-group">Upload new user avatar:</h2>
 
-<div class="form-group">
-    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($image, 'image')->fileInput(['class' => 'form-control'])->label(false) ?>
+
+        <div class="form-group">
+            <div class="col-lg-offset-1 col-lg-11">
+                <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+            </div>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+    </div>
+
 </div>
-
-<?php ActiveForm::end(); ?>
