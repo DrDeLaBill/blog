@@ -58,7 +58,7 @@ $this->beginPage() ?>
                             <?= Html::a('Signup', ['/auth/signup'], ['class' => "nav-link nav-link-4"]) ?>
                         </li>
                     <?php else: ?>
-                        <?php if (User::findOne(Yii::$app->user->id)->is_admin): ?>
+                        <?php if (Yii::$app->user->identity->is_admin): ?>
                             <li class="nav-item">
                                 <?= Html::a('Admin', ['/admin/default/index'], ['class' => "nav-link nav-link-4"]) ?>
                             </li>

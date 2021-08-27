@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
         'css/all.min.css',
         'css/bootstrap.min.css',
         'css/templatemo-style.css',
+        'css/comment.css',
     ];
     public $js = [
         //'js/plugins.js',

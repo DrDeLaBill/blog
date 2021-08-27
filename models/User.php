@@ -136,4 +136,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
+
+    public function saveImage($image)
+    {
+        $this->image = $image;
+        return $this->save(false);
+    }
 }

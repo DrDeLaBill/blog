@@ -124,6 +124,12 @@ class Article extends \yii\db\ActiveRecord
         return parent::beforeDelete();
     }
 
+    public function beforeSave($insert)
+    {
+        $this->user_id = Yii::$app->user->identity->getId();
+        return parent::beforeSave($insert);
+    }
+
     public function getImage()
     {
         return ($this->image) ? '/uploads/' . $this->image : '/default.jpg';
